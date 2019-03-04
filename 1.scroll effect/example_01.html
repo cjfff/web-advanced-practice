@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      width: 600px;
+      margin: 40px auto;
+    }
+
+    .list {
+      overflow: hidden;
+      height: 120px;
+    }
+
+    .list li {
+      height: 30px;
+      line-height: 30px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>诗歌推荐</h1>
+    <div class="list">
+      <ul>
+        <li>1.水调歌头·隐括杜牧之齐山诗</li>
+        <li>2.初夏</li>
+        <li>3.皇矣</li>
+        <li>4.新雁过妆楼·中秋后一夕李方庵月庭延客命小妓过新水令坐间赋词</li>
+        <li>5.临江仙引·上国</li>
+      </ul>
+    </div>
+  </div>
+
+  <script>
+    const listBox = document.querySelector('.list');
+    listBox.innerHTML += listBox.innerHTML; // 多复制一份内容
+    listBox.scrollTop = 0; // 开始把滚动距离设置成 0
+    const speed = 50; // 速度设置为 50 微秒更新一次
+    let counter = 0;
+
+    const callback = () => {
+      console.log(listBox.scrollHeight, counter);
+      // 因为内容复制了一份，所以高度是原来的双倍
+      // 每次更新 scrollTop 的时候，对比高度是否已经超过了 现在高度的一半
+      // 超过了就把 scrollTop 设回 0，达到模拟无限滚动的效果，此时认真观察会感觉到一丝卡顿。
+      if (listBox.scrollTop >= listBox.scrollHeight / 2) {
+        counter = 0;
+        listBox.scrollTop = counter;
+      } else {
+        listBox.scrollTop = ++counter;
+      }
+    }
+
+    let timer = setInterval(callback, speed);
+
+    // 鼠标移入把定时器移除
+    listBox.addEventListener('mouseover', () => {
+      clearInterval(timer)
+    })
+
+    // 移出继续执行
+    listBox.addEventListener('mouseout', () => {
+      timer = setInterval(callback, speed);
+    })
+  </script>
+</body>
+
+</html>
